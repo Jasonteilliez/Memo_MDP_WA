@@ -10,8 +10,6 @@ class App(tk.Tk):
         self.title("Memo MDP")
 
 
-
-
     def create_tables(self):
         Base.metadata.create_all(bind=engine)
 
