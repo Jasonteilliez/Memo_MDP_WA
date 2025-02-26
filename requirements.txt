@@ -1,0 +1,4 @@
+Pillow
+sqlalchemy
+PyInstaller
+pydantic
