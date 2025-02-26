@@ -29,7 +29,7 @@ class App(tk.Tk):
         return schemas.Category(**category.__dict__)
 
 
-    def put_category(self) -> schemas.Category:
+    def put_category(self) -> schemas.Category|str:
         category = schemas.Category(
             name = input("Enter category name :"),
             id = int(input("Enter category id :"))
@@ -42,7 +42,7 @@ class App(tk.Tk):
         return schemas.Category(**category.__dict__)
 
 
-    def delete_category(self) -> schemas.Category|None:
+    def delete_category(self) -> schemas.Category|str:
         category_id = int(input("Enter category ID :"))
         with next(get_session()) as session:
             db_category = request.get_category_by_id(db=session, category_id=category_id)
@@ -52,5 +52,23 @@ class App(tk.Tk):
         return schemas.Category(**category.__dict__)
 
 
+    def get_motdepasse(self) -> list[schemas.Motdepasse]:
+        pass
+
+
+    def post_motdepasse(self) -> schemas.Motdepasse:
+        pass
+
+
+    def put_motdepasse(self) -> schemas.Motdepasse|str:
+        pass
+
+
+    def delete_motdepasse(self) -> schemas.Motdepasse|str:
+        pass
+
+
     def test(self):
         self.put_category()
+
+
