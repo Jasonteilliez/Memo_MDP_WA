@@ -158,7 +158,8 @@ class App(tk.Tk):
             print("5 : Ajouter motdepasse")
             print("6 : Supprimer motdepasse")
             print("7 : Mettre à jour motdepasse")
-            print("8 : quitter")
+            print("8 : Create tables")
+            print("9 : quitter")
 
             choice = input("Entrez le numéro de l'opération : ")
 
@@ -221,6 +222,8 @@ class App(tk.Tk):
                 print(r)
                 print("######################################################")
             elif choice == "8":
+                self.create_tables()
+            elif choice == "9":
                 continuer = False
             else:
                 print("Choix invalide.")
