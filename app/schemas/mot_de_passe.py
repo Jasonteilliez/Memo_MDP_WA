@@ -13,3 +13,6 @@ class MotdepasseBase(BaseModel):
 
 class Motdepasse(MotdepasseBase):
     id: int
+
+    class ConfigDict:
+        from_attributes = True

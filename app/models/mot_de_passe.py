@@ -12,5 +12,5 @@ class Motdepasse(Base):
     password = Column(String(255), nullable=False)
     description = Column(String(500))
     is_tested = Column(Boolean, default=False)
-    category = relationship("Category", secondary="motdepasse_category")
+    category = relationship("Category", secondary="motdepasse_category", lazy="joined")
     

@@ -6,7 +6,6 @@ from .category import get_category_by_id
 
 def create_motdepasse(db: Session, motdepasse: schemas.MotdepasseBase):
     category = [get_category_by_id(db=db, category_id=cat.id) for cat in motdepasse.category]
-    print(category)
     db_motdepasse = Motdepasse(
         name=motdepasse.name,
         identifiant=motdepasse.identifiant,
