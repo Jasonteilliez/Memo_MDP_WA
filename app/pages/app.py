@@ -2,8 +2,8 @@ import tkinter as tk
 from db import Base, engine, get_session
 import request
 import schemas
-from .frame.frame_main import FrameMain
-
+from .add_category import WindowAddCategorie
+from .app_frame import FrameMain
 
 class App(tk.Tk):
     def __init__(self):
@@ -11,8 +11,12 @@ class App(tk.Tk):
         self.title("Memo MDP")
         self.minsize(500,400)
 
+        self.schemas = schemas
+
         self.category = self.get_category()
         self.motdepasse = self.get_motdepasse()
+
+        self.window_add_categorie = WindowAddCategorie
 
         self.frame_main = FrameMain(self)
         self.frame_main.pack(expand=True, fill='both')
@@ -28,12 +32,11 @@ class App(tk.Tk):
         return [schemas.Category(**category.__dict__) for category in responses]
 
 
-    def post_category(self) -> schemas.Category:
-        category = schemas.CategoryBase(
-            name = input("Enter category name :")
-        )
+    def post_category(self, category : schemas.CategoryBase) -> schemas.Category:
         with next(get_session()) as session:
             category = request.create_category(db=session, category=category)
+        self.category = self.get_category()
+        self.motdepasse = self.get_motdepasse()
         return schemas.Category(**category.__dict__)
 
 
