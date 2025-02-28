@@ -2,14 +2,20 @@ import tkinter as tk
 from db import Base, engine, get_session
 import request
 import schemas
+from .frame.frame_main import FrameMain
 
 
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Memo MDP")
+        self.minsize(500,400)
 
-        self.main()
+        self.category = self.get_category()
+        self.motdepasse = self.get_motdepasse()
+
+        self.frame_main = FrameMain(self)
+        self.frame_main.pack(expand=True, fill='both')
 
 
     def create_tables(self):
