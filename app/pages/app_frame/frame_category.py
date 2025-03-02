@@ -1,5 +1,6 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
+
 
 
 class FrameCategorie(tk.Frame):
@@ -24,7 +25,7 @@ class FrameCategorie(tk.Frame):
         self.tree.heading("ID", text="ID",)
         self.tree.heading("Categorie", text="Catégorie")
 
-        self.tree.column('ID', width=80, stretch=False)
+        self.tree["displaycolumns"] = ("Categorie")
 
         frame_action = tk.Frame(self)
         frame_action.pack(fill="x")
@@ -58,7 +59,16 @@ class FrameCategorie(tk.Frame):
 
 
     def click_supprimer(self):
-        print('supprimer')
+        selected_items = self.tree.selection()
+        if not selected_items:
+            messagebox.showwarning("Warring", "No item selected. Please select an item.")
+            return
+        response = messagebox.askokcancel("Confirmation suppression", "Are you sure ? ")
+        if response :   
+            for item in selected_items:
+                category_id = self.tree.item(item, "values")[0]
+                self.controller.delete_category(category_id=category_id)
+        self.update_data()                             
 
 
     def open_ajouter(self):

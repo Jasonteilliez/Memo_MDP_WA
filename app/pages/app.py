@@ -13,8 +13,9 @@ class App(tk.Tk):
 
         self.schemas = schemas
 
-        self.category = self.get_category()
-        self.motdepasse = self.get_motdepasse()
+        self.category = []
+        self.motdepasse = []
+        self.update_data()
 
         self.window_add_categorie = WindowAddCategorie
 
@@ -35,8 +36,7 @@ class App(tk.Tk):
     def post_category(self, category : schemas.CategoryBase) -> schemas.Category:
         with next(get_session()) as session:
             category = request.create_category(db=session, category=category)
-        self.category = self.get_category()
-        self.motdepasse = self.get_motdepasse()
+            self.update_data()
         return schemas.Category(**category.__dict__)
 
 
@@ -53,13 +53,13 @@ class App(tk.Tk):
         return schemas.Category(**category.__dict__)
 
 
-    def delete_category(self) -> str:
-        category_id = int(input("Enter category ID :"))
+    def delete_category(self, category_id: int) -> str:
         with next(get_session()) as session:
             db_category = request.get_category_by_id(db=session, category_id=category_id)
             if not db_category:
                 return "Category not found"
             request.delete_category(db=session, category=db_category)
+            self.update_data()
         return "Category delete."
 
 
@@ -152,6 +152,11 @@ class App(tk.Tk):
             is_tested = motdepasse.is_tested,
             category = categories
         )
+
+
+    def update_data(self):
+        self.category = self.get_category()
+        self.motdepasse = self.get_motdepasse()
 
 
     def main(self):
