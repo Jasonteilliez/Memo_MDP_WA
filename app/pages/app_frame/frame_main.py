@@ -29,6 +29,12 @@ class FrameMain(tk.Frame):
         self.frame_categorie = FrameCategorie(tab_categorie, master)
         self.frame_categorie.pack(expand=True, fill='both', padx=10, pady=10)
 
+        notebook.bind("<<NotebookTabChanged>>", self.on_tab_change)
+
+    def on_tab_change(self, event):
+        self.frame_categorie.update_scrollbar()
+
+
 
 
 

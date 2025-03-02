@@ -8,6 +8,7 @@ class FrameCategorie(tk.Frame):
         super().__init__(master)
         self.controller = controller
 
+        self.column = ("ID", "Categorie")
         self.init_ui()
         self.display_data()
 
@@ -19,13 +20,32 @@ class FrameCategorie(tk.Frame):
         label_title = tk.Label(self, text="Catégorie Option", font=('Arial', 16, 'bold'))
         label_title.pack(fill="x", pady=10)
 
-        self.tree = ttk.Treeview(self, columns=("ID", "Categorie"), show="headings")
-        self.tree.pack(fill="both", expand=True)
+        ### Treeview ###
+        self.frame_tree = tk.Frame(self)
+        self.frame_tree.pack(fill="both", expand=True)
 
-        self.tree.heading("ID", text="ID",)
+        self.tree = ttk.Treeview(self.frame_tree, columns=self.column, show="headings")
+
+        self.tree.heading("ID", text="ID")
         self.tree.heading("Categorie", text="Catégorie")
 
+        self.tree.column("ID", width=0, stretch=False)
+
         self.tree["displaycolumns"] = ("Categorie")
+
+        self.h_scroll = ttk.Scrollbar(self.frame_tree, orient="horizontal", command=self.tree.xview)
+        self.tree.configure(xscrollcommand=self.h_scroll.set)
+
+        self.v_scroll = ttk.Scrollbar(self.frame_tree, orient="vertical", command=self.tree.yview)
+        self.tree.configure(yscrollcommand=self.v_scroll.set)
+
+        self.tree.grid(row=0, column=0, sticky="nsew")
+        self.v_scroll.grid(row=0, column=1, sticky="ns")
+        self.h_scroll.grid(row=1, column=0, sticky="ew")
+
+        self.frame_tree.grid_rowconfigure(0, weight=1)
+        self.frame_tree.grid_columnconfigure(0, weight=1)
+        ### Treeview ###
 
         frame_action = tk.Frame(self)
         frame_action.pack(fill="x")
@@ -41,12 +61,44 @@ class FrameCategorie(tk.Frame):
 
         frame_action.columnconfigure(2, weight=1)
 
+
     def display_data(self):
         for line in self.controller.category:
             self.tree.insert("", "end", values=(line.id, line.name))
+        self.update_scrollbar()
+
 
     def clear_tree(self):
         self.tree.delete(*self.tree.get_children())
+
+    
+    def update_scrollbar(self):
+        self.controller.update()
+        self.update_h_scroll()
+        self.update_v_scroll()
+
+
+    def update_v_scroll(self):
+        
+        self.v_scroll.grid_forget()
+
+        if not self.tree.get_children():
+            return
+
+        for child in self.tree.get_children():
+            if not self.tree.bbox(child) or self.tree.bbox(child)[1]+self.tree.bbox(child)[3] > self.tree.winfo_height():
+                self.v_scroll.grid(row=0, column=1, sticky="ns")
+                return
+
+
+    def update_h_scroll(self):
+        self.h_scroll.grid_forget()
+        width = 0
+        for column in self.column: 
+            width += self.tree.column(column, "width")
+
+        if width > self.tree.winfo_width() :
+            self.h_scroll.grid(row=1, column=0, sticky="ew")
 
 
     def update_data(self):
