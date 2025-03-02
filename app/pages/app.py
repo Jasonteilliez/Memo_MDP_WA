@@ -3,6 +3,7 @@ from db import Base, engine, get_session
 import request
 import schemas
 from .add_category import WindowAddCategorie
+from .update_category import WindowUpdateCategorie
 from .app_frame import FrameMain
 
 class App(tk.Tk):
@@ -18,6 +19,7 @@ class App(tk.Tk):
         self.update_data()
 
         self.window_add_categorie = WindowAddCategorie
+        self.window_update_categorie = WindowUpdateCategorie
 
         self.frame_main = FrameMain(self)
         self.frame_main.pack(expand=True, fill='both')
@@ -40,16 +42,13 @@ class App(tk.Tk):
         return schemas.Category(**category.__dict__)
 
 
-    def put_category(self) -> schemas.Category|str:
-        category = schemas.Category(
-            name = input("Enter category name :"),
-            id = int(input("Enter category id :"))
-        )
+    def put_category(self, category = schemas.Category) -> schemas.Category|str:
         with next(get_session()) as session:
             db_category = request.get_category_by_id(db=session, category_id=category.id)
             if not db_category:
                 return "Category not found"
             category = request.update_category(db=session, category=db_category, new_category=category)
+        self.update_data()
         return schemas.Category(**category.__dict__)
 
 
@@ -157,6 +156,12 @@ class App(tk.Tk):
     def update_data(self):
         self.category = self.get_category()
         self.motdepasse = self.get_motdepasse()
+
+
+    def find_category_by_id(self, search_id: int):
+        for category in self.category:
+            if search_id == category.id:
+                return category
 
 
     def main(self):

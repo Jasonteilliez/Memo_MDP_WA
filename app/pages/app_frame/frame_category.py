@@ -30,7 +30,7 @@ class FrameCategorie(tk.Frame):
         frame_action = tk.Frame(self)
         frame_action.pack(fill="x")
 
-        button_modifier = tk.Button(frame_action, text="Modifier Selection", command=self.click_modifier)
+        button_modifier = tk.Button(frame_action, text="Modifier Selection", command=self.open_modifier)
         button_modifier.grid(row=0, column=0)
         
         button_supprimer = tk.Button(frame_action, text="Supprimer Selection", command=self.click_supprimer)
@@ -52,10 +52,6 @@ class FrameCategorie(tk.Frame):
     def update_data(self):
         self.clear_tree()
         self.display_data()
-
-    
-    def click_modifier(self):
-        print('modifier')
 
 
     def click_supprimer(self):
@@ -81,5 +77,23 @@ class FrameCategorie(tk.Frame):
         self.new_window_add.destroy()
         self.new_window_add = None
 
+
+    def open_modifier(self):
+        selected_items = self.tree.selection()
+        if not selected_items:
+            messagebox.showwarning("Warring", "No item selected. Please select an item.")
+            return
+        if len(selected_items)>1:
+            messagebox.showwarning("Warring", "Two or more selected item. You can only modify one time at a time.")
+            return
+        if self.new_window_modify is None or not self.new_window_modify.winfo_exists():
+            search_id = int(self.tree.item(selected_items, "values")[0])
+            category = self.controller.find_category_by_id(search_id=search_id)
+            self.new_window_modify = self.controller.window_update_categorie(self.controller, category)
+            self.new_window_modify.protocol("WM_DELETE_WINDOW", self.on_close_modifier)
+        return
     
 
+    def on_close_modifier(self):
+        self.new_window_modify.destroy()
+        self.new_window_modify = None
