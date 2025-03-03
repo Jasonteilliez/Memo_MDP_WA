@@ -4,6 +4,7 @@ import request
 import schemas
 from .add_category import WindowAddCategorie
 from .update_category import WindowUpdateCategorie
+from .add_motdepasse import WindowAddMotdepasse
 from .app_frame import FrameMain
 
 class App(tk.Tk):
@@ -20,6 +21,7 @@ class App(tk.Tk):
 
         self.window_add_categorie = WindowAddCategorie
         self.window_update_categorie = WindowUpdateCategorie
+        self.window_add_motdepasse = WindowAddMotdepasse
 
         self.frame_main = FrameMain(self)
         self.frame_main.pack(expand=True, fill='both')
@@ -68,26 +70,7 @@ class App(tk.Tk):
         return [self.motdepasse_models_to_schemas(response) for response in responses]
 
 
-    def post_motdepasse(self) -> schemas.Motdepasse|str:
-        # Fake data #####
-        motdepasse = schemas.MotdepasseBase(
-            name = input("Enter motdepasse name :"),
-            identifiant = input("Enter motdepasse identifiant :"),
-            password = input("Enter motdepasse password :"),
-            description = input("Enter motdepasse description :"),
-            is_tested = False,
-            category = [] 
-        )
-        choice = 1
-        while choice :
-            choice = int(input("Do you want to add a category ?"))
-            if choice :
-                category = schemas.Category(
-                    id = input("Enter category id :"),
-                    name = input("Enter category name :")
-                )
-                motdepasse.category.append(category)
-        # Fake data #####
+    def post_motdepasse(self, motdepasse : schemas.MotdepasseBase) -> schemas.Motdepasse|str:
         with next(get_session()) as session:
             if motdepasse.category:
                 for cat in motdepasse.category:
@@ -95,6 +78,7 @@ class App(tk.Tk):
                     if not r:
                         return "Category not found" 
             response = request.create_motdepasse(db=session, motdepasse=motdepasse)
+            self.update_data()
         return self.motdepasse_models_to_schemas(response)
 
 
@@ -127,10 +111,7 @@ class App(tk.Tk):
         return self.motdepasse_models_to_schemas(response)
 
 
-    def delete_motdepasse(self) -> str:
-        # Fake data #####
-        motdepasse_id = int(input("Enter motdepasse ID :"))
-        # Fake data #####
+    def delete_motdepasse(self, motdepasse_id: int) -> str:
         with next(get_session()) as session:
             db_motdepasse = request.get_motdepasse_by_id(db=session, motdepasse_id=motdepasse_id)
             if not db_motdepasse:
