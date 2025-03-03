@@ -47,8 +47,6 @@ class WindowAddCategorie(tk.Toplevel):
         )
         self.master.post_category(category=category)
         self.entry_nom.delete(0, "end")
-        
-        self.master.frame_main.frame_categorie.update_data()
 
     def click_annuler(self):
         self.destroy()

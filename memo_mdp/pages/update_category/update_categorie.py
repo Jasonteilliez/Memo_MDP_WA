@@ -49,7 +49,6 @@ class WindowUpdateCategorie(tk.Toplevel):
             id = self.category.id
         )
         self.master.put_category(category=category)
-        self.master.frame_main.frame_categorie.update_data()
         self.destroy()
 
     def click_annuler(self):

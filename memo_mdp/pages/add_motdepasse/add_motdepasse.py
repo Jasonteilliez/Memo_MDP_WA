@@ -91,8 +91,6 @@ class WindowAddMotdepasse(tk.Toplevel):
         self.entry_description.delete(0, "end")
         for val in self.list_val.values():
             val.set(False)
-        
-        self.master.frame_main.frame_motdepasse.update_data()
 
     def click_annuler(self):
         self.destroy()

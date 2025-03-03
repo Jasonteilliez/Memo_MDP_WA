@@ -117,22 +117,23 @@ class FrameMotdepasse(tk.Frame):
             self.h_scroll.grid(row=1, column=0, sticky="ew")
        
 
-    def update_data(self):
+    def update_tree(self):
         self.clear_tree()
         self.display_data()
 
 
     def click_supprimer(self):
-        selected_items = self.tree.selection()
-        if not selected_items:
-            messagebox.showwarning("Warring", "No item selected. Please select an item.")
-            return
-        response = messagebox.askokcancel("Confirmation suppression", "Are you sure ? ")
-        if response :   
-            for item in selected_items:
-                motdepasse_id = self.tree.item(item, "values")[0]
-                self.controller.delete_category(category_id=motdepasse_id)
-        self.update_data()                             
+        pass
+        # selected_items = self.tree.selection()
+        # if not selected_items:
+        #     messagebox.showwarning("Warring", "No item selected. Please select an item.")
+        #     return
+        # response = messagebox.askokcancel("Confirmation suppression", "Are you sure ? ")
+        # if response :   
+        #     for item in selected_items:
+        #         motdepasse_id = self.tree.item(item, "values")[0]
+        #         self.controller.delete_category(category_id=motdepasse_id)
+        # self.update_data()                             
 
 
     def open_ajouter(self):

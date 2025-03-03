@@ -11,7 +11,7 @@ def create_motdepasse(db: Session, motdepasse: schemas.MotdepasseBase):
         identifiant=motdepasse.identifiant,
         password=motdepasse.password,
         description=motdepasse.description,
-        is_tested=False,
+        is_tested=motdepasse.is_tested,
         category= category
     )
     db.add(db_motdepasse)

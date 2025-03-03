@@ -15,7 +15,7 @@ class App(tk.Tk):
 
         self.category = []
         self.motdepasse = []
-        self.update_data()
+        
 
         self.window_add_categorie = WindowAddCategorie
         self.window_update_categorie = WindowUpdateCategorie
@@ -23,6 +23,8 @@ class App(tk.Tk):
 
         self.frame_main = FrameMain(self)
         self.frame_main.pack(expand=True, fill='both')
+
+        self.update_data()
 
 
     def create_tables(self):
@@ -115,7 +117,7 @@ class App(tk.Tk):
     def update_data(self):
         self.category = self.get_category()
         self.motdepasse = self.get_motdepasse()
-
+        self.frame_main.update_display()
 
     def find_category_by_id(self, search_id: int) -> schemas.category: 
         for category in self.category:

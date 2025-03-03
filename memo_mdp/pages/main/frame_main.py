@@ -29,6 +29,7 @@ class FrameMain(tk.Frame):
 
         self.notebook.bind("<<NotebookTabChanged>>", self.on_tab_change)
 
+
     def on_tab_change(self, event):
         selected_tab = self.notebook.select()
         if selected_tab == ".!framemain.!notebook.!frame":
@@ -38,6 +39,9 @@ class FrameMain(tk.Frame):
         return
 
 
+    def update_display(self):
+        self.frame_categorie.update_tree()
+        self.frame_motdepasse.update_tree()
 
 
 

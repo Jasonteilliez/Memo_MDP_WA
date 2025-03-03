@@ -100,7 +100,7 @@ class FrameCategorie(tk.Frame):
             self.h_scroll.grid(row=1, column=0, sticky="ew")
 
 
-    def update_data(self):
+    def update_tree(self):
         self.clear_tree()
         self.display_data()
 
@@ -114,8 +114,7 @@ class FrameCategorie(tk.Frame):
         if response :   
             for item in selected_items:
                 category_id = self.tree.item(item, "values")[0]
-                self.controller.delete_category(category_id=category_id)
-        self.update_data()                             
+                self.controller.delete_category(category_id=category_id)                         
 
 
     def open_ajouter(self):
