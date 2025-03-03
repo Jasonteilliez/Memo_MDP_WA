@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 
 
-
 class FrameCategorie(tk.Frame):
     def __init__(self, master, controller):
         super().__init__(master)

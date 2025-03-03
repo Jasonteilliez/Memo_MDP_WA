@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
-from .frame_category import FrameCategorie
-from .frame_motdepasse import FrameMotdepasse
+from . import FrameCategorie
+from . import FrameMotdepasse
 
 class FrameMain(tk.Frame):
     def __init__(self, master):

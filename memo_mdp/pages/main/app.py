@@ -2,10 +2,8 @@ import tkinter as tk
 from db import Base, engine, get_session
 import request
 import schemas
-from .add_category import WindowAddCategorie
-from .update_category import WindowUpdateCategorie
-from .add_motdepasse import WindowAddMotdepasse
-from .app_frame import FrameMain
+from pages import WindowAddCategorie, WindowUpdateCategorie, WindowAddMotdepasse
+from . import FrameMain
 
 class App(tk.Tk):
     def __init__(self):
@@ -70,7 +68,7 @@ class App(tk.Tk):
         return [self.motdepasse_models_to_schemas(response) for response in responses]
 
 
-    def post_motdepasse(self, motdepasse : schemas.MotdepasseBase) -> schemas.Motdepasse|str:
+    def post_motdepasse(self, motdepasse: schemas.MotdepasseBase) -> schemas.Motdepasse|str:
         with next(get_session()) as session:
             if motdepasse.category:
                 for cat in motdepasse.category:
@@ -82,27 +80,7 @@ class App(tk.Tk):
         return self.motdepasse_models_to_schemas(response)
 
 
-    def put_motdepasse(self) -> schemas.Motdepasse|str:
-        # Fake data #####
-        motdepasse = schemas.Motdepasse(
-            id = input("Enter motdepasse id :"),
-            name = input("Enter motdepasse name :"),
-            identifiant = input("Enter motdepasse identifiant :"),
-            password = input("Enter motdepasse password :"),
-            description = input("Enter motdepasse description :"),
-            is_tested = False,
-            category = [] 
-        )
-        choice = 1
-        while choice :
-            choice = int(input("Do you want to add a category ?"))
-            if choice :
-                category = schemas.Category(
-                    id = input("Enter category id :"),
-                    name = input("Enter category name :")
-                )
-                motdepasse.category.append(category)
-        # Fake data #####
+    def put_motdepasse(self, motdepasse: schemas.Motdepasse) -> schemas.Motdepasse|str:
         with next(get_session()) as session:
             db_motdepasse = request.get_motdepasse_by_id(db=session, motdepasse_id=motdepasse.id)
             if not db_motdepasse:
@@ -139,14 +117,14 @@ class App(tk.Tk):
         self.motdepasse = self.get_motdepasse()
 
 
-    def find_category_by_id(self, search_id: int):
+    def find_category_by_id(self, search_id: int) -> schemas.category: 
         for category in self.category:
             if search_id == category.id:
                 return category
 
 
-    def main(self):
-
+    def test_api(self):
+        # ToDo :Need to add data
         continuer = True
         while continuer:
             print("Options disponibles :")
