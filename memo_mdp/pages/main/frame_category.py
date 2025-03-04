@@ -115,7 +115,7 @@ class FrameCategorie(tk.Frame):
             for item in selected_items:
                 category_id = self.tree.item(item, "values")[0]
                 self.controller.delete_category(category_id=category_id)                         
-
+        self.controller.update_data()
 
     def open_ajouter(self):
         if self.new_window_add is None or not self.new_window_add.winfo_exists():

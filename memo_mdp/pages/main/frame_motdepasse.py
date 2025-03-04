@@ -123,17 +123,16 @@ class FrameMotdepasse(tk.Frame):
 
 
     def click_supprimer(self):
-        pass
-        # selected_items = self.tree.selection()
-        # if not selected_items:
-        #     messagebox.showwarning("Warring", "No item selected. Please select an item.")
-        #     return
-        # response = messagebox.askokcancel("Confirmation suppression", "Are you sure ? ")
-        # if response :   
-        #     for item in selected_items:
-        #         motdepasse_id = self.tree.item(item, "values")[0]
-        #         self.controller.delete_category(category_id=motdepasse_id)
-        # self.update_data()                             
+        selected_items = self.tree.selection()
+        if not selected_items:
+            messagebox.showwarning("Warring", "No item selected. Please select an item.")
+            return
+        response = messagebox.askokcancel("Confirmation suppression", "Are you sure ? ")
+        if response :   
+            for item in selected_items:
+                motdepasse_id = self.tree.item(item, "values")[0]
+                self.controller.delete_motdepasse(motdepasse_id=motdepasse_id)                            
+        self.controller.update_data()
 
 
     def open_ajouter(self):
@@ -157,11 +156,11 @@ class FrameMotdepasse(tk.Frame):
             return
         if self.new_window_modify is None or not self.new_window_modify.winfo_exists():
             search_id = int(self.tree.item(selected_items, "values")[0])
-            category = self.controller.find_category_by_id(search_id=search_id)
-            self.new_window_modify = self.controller.window_update_categorie(self.controller, category)
+            motdepasse = self.controller.find_motdepasse_by_id(search_id=search_id)
+            self.new_window_modify = self.controller.window_update_motdepasse(self.controller, motdepasse)
             self.new_window_modify.protocol("WM_DELETE_WINDOW", self.on_close_modifier)
         return
-    
+
 
     def on_close_modifier(self):
         self.new_window_modify.destroy()

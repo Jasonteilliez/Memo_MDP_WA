@@ -1,0 +1,1 @@
+from .update_motdepasse import WindowUpdateMotdepasse

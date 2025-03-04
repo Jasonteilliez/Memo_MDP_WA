@@ -2,7 +2,7 @@ import tkinter as tk
 from db import Base, engine, get_session
 import request
 import schemas
-from pages import WindowAddCategorie, WindowUpdateCategorie, WindowAddMotdepasse
+from pages import WindowAddCategorie, WindowUpdateCategorie, WindowAddMotdepasse, WindowUpdateMotdepasse
 from . import FrameMain
 
 class App(tk.Tk):
@@ -20,6 +20,7 @@ class App(tk.Tk):
         self.window_add_categorie = WindowAddCategorie
         self.window_update_categorie = WindowUpdateCategorie
         self.window_add_motdepasse = WindowAddMotdepasse
+        self.window_update_motdepasse = WindowUpdateMotdepasse
 
         self.frame_main = FrameMain(self)
         self.frame_main.pack(expand=True, fill='both')
@@ -60,7 +61,6 @@ class App(tk.Tk):
             if not db_category:
                 return "Category not found"
             request.delete_category(db=session, category=db_category)
-            self.update_data()
         return "Category delete."
 
 
@@ -88,6 +88,7 @@ class App(tk.Tk):
             if not db_motdepasse:
                 return "Mot de passe not found"          
             response = request.update_motdepasse(db=session, motdepasse=db_motdepasse, new_motdepasse=motdepasse)
+        self.update_data()
         return self.motdepasse_models_to_schemas(response)
 
 
@@ -119,10 +120,17 @@ class App(tk.Tk):
         self.motdepasse = self.get_motdepasse()
         self.frame_main.update_display()
 
+
     def find_category_by_id(self, search_id: int) -> schemas.category: 
         for category in self.category:
             if search_id == category.id:
                 return category
+
+
+    def find_motdepasse_by_id(self, search_id: int) -> schemas.Motdepasse:
+        for motdepasse in self.motdepasse:
+            if search_id == motdepasse.id:
+                return motdepasse
 
 
     def test_api(self):
